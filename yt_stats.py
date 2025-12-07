@@ -3,6 +3,7 @@ import json
 
 import os
 from dotenv import load_dotenv
+from datetime import datetime
 
 load_dotenv(dotenv_path=".env")
 
@@ -113,12 +114,33 @@ def extract_video_data(video_ids):
     except requests.exceptions.RequestException as e:
         raise e
 
+def save_video_stats(video_stats):
+    
+    try:
+        # Create data folder if it doesn't exist
+        os.makedirs("data", exist_ok=True)
+        
+        # Get today's date for filename
+        today = datetime.now().strftime("%Y-%m-%d")
+        filename = f"data/{today}_stats.json"
+        
+        # Save stats to JSON file with UTF-8 encoding
+        with open(filename, "w", encoding="utf-8") as f:
+            json.dump(video_stats, f, ensure_ascii=False, indent=4)
+        
+        print(f"Video stats saved to {filename}")
+    
+    except Exception as e:
+        raise e
+
 if __name__ == "__main__":
     PlaylistId = get_playlistId()
     
     video_ids = get_videos_ids(PlaylistId)
     
-    stats = get_video_stats(video_ids)
+    stats = extract_video_data(video_ids)
+    
+    save_video_stats(stats)
     
     for stat in stats:
         print(stat)
