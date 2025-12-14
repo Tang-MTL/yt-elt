@@ -1,10 +1,10 @@
-ARG AIRFlOW_VERSION=2.12.3
-ARG PYTHOON_VERSION=3.10
+ARG AIRFLOW_VERSION=2.10.0
+ARG PYTHON_VERSION=3.11
 
-from apache/airflow:${AIRFlOW_VERSION}-python${PYTHOON_VERSION}-slim-buster
+from apache/airflow:${AIRFLOW_VERSION}-python${PYTHON_VERSION}
 
 ENV AIRFLOW_HOME=/opt/airflow
 
 COPY requirements.txt /
 
-RUN pip install --no-cache-dir "apache-airflow==${AIRFlOW_VERSION}" -r /requirements.txt
+RUN pip install --no-cache-dir -r /requirements.txt
